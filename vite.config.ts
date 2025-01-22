@@ -22,4 +22,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  optimizeDeps: {
+    include: ['@apollo/client', 'graphql'],
+  },
 });

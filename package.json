@@ -5,15 +5,18 @@
   "type": "module",
   "scripts": {
     "build": "remix vite:build",
-    "dev": "remix vite:dev",
+    "dev": "remix vite:dev -p 8000 --host 0.0.0.0",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "preview": "vite preview",
     "typecheck": "tsc",
     "prepare": "husky"
   },
   "dependencies": {
+    "@apollo/client": "^3.12.7",
     "@remix-run/node": "^2.15.2",
     "@remix-run/react": "^2.15.2",
+    "graphql": "^16.10.0",
+    "isbot": "^4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
