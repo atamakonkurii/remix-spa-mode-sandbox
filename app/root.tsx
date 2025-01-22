@@ -1,7 +1,7 @@
 import {
 	ApolloClient,
+	ApolloProvider,
 	InMemoryCache,
-	gql,
 } from "@apollo/client/index.js";
 import type { LinksFunction } from "@remix-run/node";
 import {
@@ -27,27 +27,12 @@ export const links: LinksFunction = () => [
 	},
 ];
 
+const client = new ApolloClient({
+	uri: "https://flyby-router-demo.herokuapp.com/",
+	cache: new InMemoryCache(),
+});
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const client = new ApolloClient({
-    uri: "https://flyby-router-demo.herokuapp.com/",
-    cache: new InMemoryCache(),
-  });
-
-	client
-		.query({
-			query: gql`
-      query GetLocations {
-        locations {
-          id
-          name
-          description
-          photo
-        }
-      }
-    `,
-		})
-		.then((result) => console.log(result));
-
 	return (
 		<html lang="en">
 			<head>
@@ -57,9 +42,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body>
-				{children}
-				<ScrollRestoration />
-				<Scripts />
+				<ApolloProvider client={client}>
+					{children}
+					<ScrollRestoration />
+					<Scripts />
+				</ApolloProvider>
 			</body>
 		</html>
 	);
