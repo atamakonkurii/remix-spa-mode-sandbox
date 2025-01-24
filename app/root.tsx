@@ -28,7 +28,7 @@ export const links: LinksFunction = () => [
 ];
 
 const client = new ApolloClient({
-	uri: "https://flyby-router-demo.herokuapp.com/",
+	uri: "http://localhost:8080/graphql",
 	cache: new InMemoryCache(),
 });
 

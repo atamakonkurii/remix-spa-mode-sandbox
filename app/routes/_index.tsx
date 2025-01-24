@@ -59,30 +59,31 @@ export default function Index() {
 	);
 }
 
-const GET_LOCATIONS = gql`
-  query GetLocations {
-    locations {
-      id
-      name
-      description
-      photo
+const FIND_TODOS = gql`
+  query FindTodos {
+    todos {
+      text
+      done
+      user {
+        name
+      }
     }
   }
 `;
 
 function DisplayLocations() {
-	const { loading, error, data } = useQuery(GET_LOCATIONS);
+	const { loading, error, data } = useQuery(FIND_TODOS);
 
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error : {error.message}</p>;
 
-	return data.locations.map(({ id, name, description, photo }) => (
-		<div key={id}>
-			<h3>{name}</h3>
-			<img width="400" height="250" alt="location-reference" src={`${photo}`} />
+	return data.todos.map(({ text, done, user }) => (
+		<div key={user.name}>
+			<h3>{text}</h3>
+			<p>{done ? "Done" : "Not done"}</p>
 			<br />
 			<b>About this location:</b>
-			<p>{description}</p>
+			<p>{user.name}</p>
 			<br />
 		</div>
 	));
