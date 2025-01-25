@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client/index.js";
+import { gql, useQuery, useSubscription } from "@apollo/client/index.js";
 import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
@@ -53,7 +53,8 @@ export default function Index() {
 			<div>
 				<h2>My first Apollo app 🚀</h2>
 				<br />
-				<DisplayLocations />
+				<DisplayTodos />
+				<DisplayCurrentTime />
 			</div>
 		</div>
 	);
@@ -71,7 +72,7 @@ const FIND_TODOS = gql`
   }
 `;
 
-function DisplayLocations() {
+function DisplayTodos() {
 	const { loading, error, data } = useQuery(FIND_TODOS);
 
 	if (loading) return <p>Loading...</p>;
@@ -87,6 +88,28 @@ function DisplayLocations() {
 			<br />
 		</div>
 	));
+}
+
+const CURRENT_TIME_SUBSCRIPTION = gql`
+  subscription CurrentTime {
+	currentTime {
+		unixTime
+		timeStamp
+	}
+  }
+`;
+
+function DisplayCurrentTime() {
+	const { data, loading } = useSubscription(CURRENT_TIME_SUBSCRIPTION);
+
+	if (loading) return <p>Loading...</p>;
+
+	return (
+		<>
+			<div>{data.currentTime.unixTime}</div>
+			<div>{data.currentTime.timeStamp}</div>
+		</>
+	);
 }
 
 const resources = [
